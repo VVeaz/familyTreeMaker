@@ -21,7 +21,6 @@ public class FamilyTree extends JFrame
     private mxGraphComponent graphComponent;
 
     private ArrayList<Person> family;
-    //private int indexOfCurrentlyPerson;
 
     private JMenuItem addPerson, addNewChild, addExistingChild, addNewParent,
             addExistingParent, saveFamilyTreePNG, saveFamilyTreeTREE, openFamilyTree;
@@ -63,16 +62,14 @@ public class FamilyTree extends JFrame
     void setParentInAMoment(Person parentInAMoment) {
         this.ParentInAMoment = parentInAMoment;
     }
-    // private Object ParentInAMoment;
+
 
 
     ArrayList<Person> getFamily() {
         return family;
     }
 
-//    public void setFamily(ArrayList<Person> family) {
-//        this.family = family;
-//    }
+
 
     private FamilyTree()
     {
@@ -156,7 +153,7 @@ public class FamilyTree extends JFrame
 
                     close();
                 }
-                //close();
+
             }
 
         });
@@ -255,7 +252,7 @@ public class FamilyTree extends JFrame
         new AddNewParent(this);
     }
     private void addNewChild(){
-        //indexOfCurrentlyPerson++;
+
         new AddNewChild(this);
     }
     private void addExistingChild(){
@@ -283,7 +280,7 @@ public class FamilyTree extends JFrame
             }
             try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(filename+".TREE"))) {
                 outputStream.writeObject(family);
-                //outputStream.writeObject(graph);
+
             }
 
 
@@ -305,14 +302,12 @@ public class FamilyTree extends JFrame
                 openTREE(ft);
             }else {
                 try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filename))) {
-                    ArrayList<Person> familyTmp;
+
                     ft.family = (ArrayList<Person>) inputStream.readObject();
 
                     ft.drawGraph();
 
-//                mxGraph graphTmp;
-//                graphTmp = (mxGraph) inputStream.readObject();
-//                graph =  graphTmp;
+
                 }
             }
         }
@@ -351,7 +346,7 @@ public class FamilyTree extends JFrame
 
                 if (!p.isDrawn()) {
                     p.setDrawn(true);
-                    int width = 150; //i will calculate this
+                    int width = 150;
                     Object v;
                     String colour = "fillColor=#D3D5E8";
                     if (p.isWomen()) {
@@ -361,7 +356,7 @@ public class FamilyTree extends JFrame
                     pY = graph.getCellGeometry(p.getVertex()).getY();
                     v = graph.insertVertex(null, null, p.toString(), pX, pY,
                             width, 30, colour);
-                    //System.out.println("uuuuu X: "+graph.getCellGeometry(v).getX());
+
 
                     p.setVertex(v);
 
@@ -378,7 +373,7 @@ public class FamilyTree extends JFrame
                     if (!child.isDrawn()) {
                         child.setDrawn(true);
                         int height = 30;
-                        int width = 150; //i will calculate this
+                        int width = 150;
                         String colour = "fillColor=#D3D5E8";
                         if (child.isWomen()) {
                             colour = "fillColor=#F5C8E9;";
@@ -432,7 +427,7 @@ public class FamilyTree extends JFrame
 
         try
         {
-            int width = 150; //i will calculate this
+            int width = 150;
             Object v;
 
             String colour ="fillColor=#D3D5E8";
@@ -441,9 +436,9 @@ public class FamilyTree extends JFrame
             }
 
             if(addingNewChild){
-                double x = graph.getCellGeometry(ParentInAMoment.getVertex()).getX();  //i will calculate this -kids
-                double y = graph.getCellGeometry(ParentInAMoment.getVertex()).getY() +70; //i will calculate this -kids
-                System.out.println(x+" "+y);
+                double x = graph.getCellGeometry(ParentInAMoment.getVertex()).getX();
+                double y = graph.getCellGeometry(ParentInAMoment.getVertex()).getY() +70;
+
                 v = graph.insertVertex(null, null, addingPerson.toString(),x, y,
                         width, 30, colour);
                 addingPerson.setVertex(v);
@@ -454,7 +449,7 @@ public class FamilyTree extends JFrame
 
 
             }else if(addingNewParent){
-                double x = graph.getCellGeometry(ParentInAMoment.getVertex()).getX();  //i will calculate this -kids
+                double x = graph.getCellGeometry(ParentInAMoment.getVertex()).getX();
                 double y = graph.getCellGeometry(ParentInAMoment.getVertex()).getY() +70;
 
                 v = graph.insertVertex(null, null, addingPerson.toString(),x, y,
@@ -471,8 +466,7 @@ public class FamilyTree extends JFrame
                 addingPerson.setVertex(v);
 
             }
-            //Object v2 = graph.insertVertex(ParentInAMoment, null, "World!", 240, 150,80, 30);
-            //graph.insertEdge(ParentInAMoment, null, "Edge", v1, v2);
+
         }
         finally
         {
