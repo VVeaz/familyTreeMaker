@@ -1,6 +1,7 @@
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxCellRenderer;
 import com.mxgraph.view.mxGraph;
+import com.mxgraph.view.mxStylesheet;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -9,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
@@ -73,12 +75,13 @@ public class FamilyTree extends JFrame
 
     private FamilyTree()
     {
-        super("Family tree maker");
+        super("Family tree maker - untitled.TREE");
 
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         family = new ArrayList<>();
         graph= new mxGraph();
+
 
         addingNewChild =false;
         addingNewParent = false;
@@ -181,7 +184,8 @@ public class FamilyTree extends JFrame
             switch (choice) {
                 case "Add new family tree":
                     if (!family.isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "You've already added a family tree.");
+                        FamilyTree ft = new FamilyTree();
+                        ft.addPerson();
                     } else {
                         addPerson();
 
@@ -284,8 +288,7 @@ public class FamilyTree extends JFrame
             }
 
 
-            JOptionPane.showMessageDialog(null,filename, "The file name", JOptionPane.PLAIN_MESSAGE);
-
+            this.setTitle("Family tree maker - "+filename+".TREE");
 
         }
 
@@ -309,6 +312,7 @@ public class FamilyTree extends JFrame
 
 
                 }
+                ft.setTitle("Family tree maker - "+filename);
             }
         }
     }
@@ -443,20 +447,22 @@ public class FamilyTree extends JFrame
                         width, 30, colour);
                 addingPerson.setVertex(v);
 
-                graph.insertEdge(null, null, null, ParentInAMoment.getVertex(), addingPerson.getVertex() );
+
+                drawEdge(ParentInAMoment,addingPerson);
                 ParentInAMoment.addChildren(addingPerson);
                 addingNewChild = false;
 
 
             }else if(addingNewParent){
-                double x = graph.getCellGeometry(ParentInAMoment.getVertex()).getX();
-                double y = graph.getCellGeometry(ParentInAMoment.getVertex()).getY() +70;
+                double x = graph.getCellGeometry(childInAMoment.getVertex()).getX();
+                double y = graph.getCellGeometry(childInAMoment.getVertex()).getY() -70;
 
                 v = graph.insertVertex(null, null, addingPerson.toString(),x, y,
                         width, 30, colour);
                 addingPerson.setVertex(v);
 
-                graph.insertEdge(null, null, null, addingPerson.getVertex() , childInAMoment.getVertex()  );
+
+                drawEdge(addingPerson,childInAMoment);
                 addingPerson.addChildren(childInAMoment);
                 addingNewParent = false;
             } else{
