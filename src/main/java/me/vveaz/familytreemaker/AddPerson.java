@@ -95,7 +95,6 @@ public class AddPerson extends JFrame implements ActionListener {
 
         setLayout(new GridBagLayout());
         add(panel1);
-
         setSize(375,300);
 
         addWindowListener(new WindowAdapter(){
