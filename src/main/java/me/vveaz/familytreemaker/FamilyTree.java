@@ -3,7 +3,6 @@ package me.vveaz.familytreemaker;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxCellRenderer;
 import com.mxgraph.view.mxGraph;
-import com.mxgraph.view.mxStylesheet;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -23,6 +22,8 @@ public class FamilyTree extends JFrame
 
     private mxGraph graph;
     private mxGraphComponent graphComponent;
+
+    private int vertexWidth, vertexHeight;
 
     private List<Person> family;
 
@@ -78,6 +79,8 @@ public class FamilyTree extends JFrame
 
         family = new ArrayList<>();
         graph= new mxGraph();
+        vertexHeight = 30;
+        vertexWidth = 150;
 
 
         addingNewChild =false;
@@ -170,9 +173,6 @@ public class FamilyTree extends JFrame
     }
 
 
-
-
-
     private class MyChoserActionListener implements ActionListener {
 
         @Override
@@ -185,15 +185,10 @@ public class FamilyTree extends JFrame
                         ft.addPerson();
                     } else {
                         addPerson();
-
-
                     }
-
-
                     break;
                 case "Add person":
                     addPerson();
-
                     break;
                 case "Add new child":
                     setAddingNewChild(true);
@@ -215,11 +210,10 @@ public class FamilyTree extends JFrame
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
-
                     break;
                 case "Save as TREE":
                     try {
-                        saveASTREE();
+                        saveAsTREE();
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
@@ -248,17 +242,16 @@ public class FamilyTree extends JFrame
     private void addExistingParent() {
         new AddExisting(this, false);
     }
-
     private void addParent(){
         new AddNewParent(this);
     }
-    private void addNewChild(){
-
-        new AddNewChild(this);
-    }
+    private void addNewChild(){new AddNewChild(this);}
     private void addExistingChild(){
         new AddExisting(this, true);
     }
+    void addPerson(){ new AddPerson(this);}
+
+
     private void saveAsPNG() throws IOException {
         JFileChooser fileChooser = new JFileChooser(".");
         int userChoice = fileChooser.showSaveDialog(null);
@@ -267,11 +260,9 @@ public class FamilyTree extends JFrame
             BufferedImage image = mxCellRenderer.createBufferedImage(graph, null, 1, Color.WHITE, true, null);
             ImageIO.write(image, "PNG", new File(filename+".png"));
             JOptionPane.showMessageDialog(null,filename, "The file name", JOptionPane.PLAIN_MESSAGE);
-
-
         }
     }
-    private void saveASTREE() throws IOException {
+    private void saveAsTREE() throws IOException {
         JFileChooser fileChooser = new JFileChooser(".");
         int userChoice = fileChooser.showSaveDialog(null);
         if(userChoice == JFileChooser.APPROVE_OPTION){
@@ -283,10 +274,7 @@ public class FamilyTree extends JFrame
                 outputStream.writeObject(family);
 
             }
-
-
             this.setTitle("Family tree maker - "+filename+".TREE");
-
         }
 
     }
@@ -296,7 +284,6 @@ public class FamilyTree extends JFrame
         if(userChoice == JFileChooser.APPROVE_OPTION){
             String filename = fileChooser.getSelectedFile().getAbsolutePath();
             String extension = filename.substring(filename.length()-4);
-            //System.out.println(extension);
             if(!extension.equals("TREE")){
                 JOptionPane.showMessageDialog(null,"Select the file with the TREE extension");
                 openTREE(ft);
@@ -311,21 +298,10 @@ public class FamilyTree extends JFrame
         }
     }
 
-    void addPerson(){
-
-        new AddPerson(this);
-
-
-
-    }
     void drawEdge(Person parent, Person child){
         graph.getModel().beginUpdate();
-
         try{
-
                 graph.insertEdge(null, null, null, parent.getVertex(), child.getVertex());
-
-
         }
         finally
         {
@@ -343,7 +319,6 @@ public class FamilyTree extends JFrame
 
                 if (!p.isDrawn()) {
                     p.setDrawn(true);
-                    int width = 150;
                     Object v;
                     String colour = "fillColor=#D3D5E8";
                     if (p.isWomen()) {
@@ -352,20 +327,13 @@ public class FamilyTree extends JFrame
                     pX = graph.getCellGeometry(p.getVertex()).getX();
                     pY = graph.getCellGeometry(p.getVertex()).getY();
                     v = graph.insertVertex(null, null, p.toString(), pX, pY,
-                            width, 30, colour);
-
-
+                            vertexWidth, vertexHeight, colour);
                     p.setVertex(v);
-
-
-
                 }
 
                 for (Person child : p.getChildren()) {
                     if (!child.isDrawn()) {
                         child.setDrawn(true);
-                        int height = 30;
-                        int width = 150;
                         String colour = "fillColor=#D3D5E8";
                         if (child.isWomen()) {
                             colour = "fillColor=#F5C8E9;";
@@ -373,14 +341,10 @@ public class FamilyTree extends JFrame
                         pX = graph.getCellGeometry(child.getVertex()).getX();
                         pY = graph.getCellGeometry(child.getVertex()).getY();
                         Object v = graph.insertVertex(null, null, child.toString(), pX, pY,
-                                width, height, colour);
+                                vertexWidth, vertexHeight, colour);
                         child.setVertex(v);
                     }
-
-
                     drawEdge(p, child);
-
-
                 }
             }finally {
                 graph.getModel().endUpdate();
@@ -393,14 +357,12 @@ public class FamilyTree extends JFrame
         addParent.setEnabled(true);
         saveFamilyTree.setEnabled(true);
         if(this.family.size() >= 2 ){
-
             addExistingChild.setEnabled(true);
             addExistingParent.setEnabled(true);
         }else{
             addExistingChild.setEnabled(false);
             addExistingParent.setEnabled(false);
         }
-
         this.validate();
         this.repaint();
     }
@@ -408,12 +370,10 @@ public class FamilyTree extends JFrame
     void updateGraph(Person addingPerson){
         family.add(addingPerson);
         graph.getModel().beginUpdate();
-
         try
         {
-            int width = 150;
-            Object v;
 
+            Object v;
             String colour ="fillColor=#D3D5E8";
             if(addingPerson.isWomen()){
                 colour = "fillColor=#F5C8E9;";
@@ -424,7 +384,7 @@ public class FamilyTree extends JFrame
                 double y = graph.getCellGeometry(ParentInAMoment.getVertex()).getY() +70;
 
                 v = graph.insertVertex(null, null, addingPerson.toString(),x, y,
-                        width, 30, colour);
+                        vertexWidth, vertexHeight, colour);
                 addingPerson.setVertex(v);
 
                 ParentInAMoment.addChildren(addingPerson);
@@ -442,7 +402,7 @@ public class FamilyTree extends JFrame
                 double y = graph.getCellGeometry(childInAMoment.getVertex()).getY() -70;
 
                 v = graph.insertVertex(null, null, addingPerson.toString(),x, y,
-                        width, 30, colour);
+                        vertexWidth, vertexHeight, colour);
                 addingPerson.setVertex(v);
 
                 addingPerson.addChildren(childInAMoment);
@@ -450,11 +410,9 @@ public class FamilyTree extends JFrame
 
                 addingNewParent = false;
             } else{
-
                 v= graph.insertVertex(null, null, addingPerson.toString(), 800, 400,
-                        width, 30, colour);
+                        vertexWidth, vertexHeight, colour);
                 addingPerson.setVertex(v);
-
             }
 
         }
