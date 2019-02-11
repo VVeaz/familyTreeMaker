@@ -2,7 +2,9 @@ package me.vveaz.familytreemaker;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Person implements Serializable {
     private String name;
@@ -16,6 +18,10 @@ public class Person implements Serializable {
     private boolean isAlive;
     private boolean isWomen;
     private Object vertex;
+
+    public List<Person> partners;
+    public Map<Person, Object> connectingVertex;
+
 
     private List<Person> children;
     private boolean drawn;
@@ -128,6 +134,8 @@ public class Person implements Serializable {
 
         this.date_of_birth = date_of_birth;
         drawn = false;
+        partners=new ArrayList<>();
+        connectingVertex=new HashMap<>();
 
         isAlive = date_of_death.isEmpty();
         this.date_of_death = date_of_death;

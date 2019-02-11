@@ -269,6 +269,8 @@ public class FamilyTree extends JFrame
             String filename = fileChooser.getSelectedFile().getAbsolutePath();
             for(Person p: family){
                 p.setDrawn(false);
+                p.partners.clear();
+                p.connectingVertex.clear();
             }
             try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(filename+".TREE"))) {
                 outputStream.writeObject(family);
@@ -301,7 +303,46 @@ public class FamilyTree extends JFrame
     void drawEdge(Person parent, Person child){
         graph.getModel().beginUpdate();
         try{
+            if(child.hasBothParents() &&
+                    ((parent.isWomen() && child.getFather().isDrawn() )
+                            || (!parent.isWomen() && child.getMother().isDrawn()))) {
+                System.out.println(child.toString());
+                System.out.println(parent.toString());
+
+                Object edge;
+                if (parent.isWomen()) {
+                    edge = graph.getEdgesBetween(child.getFather().getVertex(), child.getVertex())[0];
+
+                }else{
+                    edge = graph.getEdgesBetween(child.getMother().getVertex(), child.getVertex())[0];
+
+                }
+                graph.getModel().remove(edge);
+
+                Object connectParent;
+                if(!child.getMother().partners.contains(child.getFather())) {
+
+                    double x = (graph.getCellGeometry(child.getMother().getVertex()).getX()
+                            + graph.getCellGeometry(child.getFather().getVertex()).getX()) / 2 + 75;
+                    double y = graph.getCellGeometry(child.getMother().getVertex()).getY() + 35;
+                    connectParent = graph.insertVertex(null, null, "", x, y,
+                            0, 0);
+                    graph.insertEdge(null, null, null, child.getMother().getVertex(), connectParent);
+                    graph.insertEdge(null, null, null, child.getFather().getVertex(), connectParent);
+
+                    child.getMother().partners.add(child.getFather());
+                    child.getMother().connectingVertex.put(child.getFather(), connectParent);
+                    child.getFather().partners.add(child.getMother());
+                    child.getFather().connectingVertex.put(child.getMother(), connectParent);
+                }else{
+                    connectParent = child.getMother().connectingVertex.get(child.getFather());
+                }
+
+                graph.insertEdge(null, null, null, connectParent, child.getVertex());
+            }else {
+
                 graph.insertEdge(null, null, null, parent.getVertex(), child.getVertex());
+            }
         }
         finally
         {
@@ -414,6 +455,7 @@ public class FamilyTree extends JFrame
                         vertexWidth, vertexHeight, colour);
                 addingPerson.setVertex(v);
             }
+            addingPerson.setDrawn(true);
 
         }
         finally
