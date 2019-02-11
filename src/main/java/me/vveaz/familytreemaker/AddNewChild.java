@@ -6,14 +6,14 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class AddNewChild extends JFrame {
+class AddNewChild extends JFrame {
     private final FamilyTree window;
     private PersonTableModel tableModel;
     private JTable table;
     private JScrollPane scrollPane;
     private JPanel panel;
 
-    public AddNewChild(FamilyTree window){
+    AddNewChild(FamilyTree window){
         super("Who should I give a child?");
         this.window = window;
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -43,13 +43,11 @@ public class AddNewChild extends JFrame {
         panel = new JPanel();
         panel.add(scrollPane);
         add(panel,BorderLayout.CENTER);
-        table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-            public void valueChanged(ListSelectionEvent event) {
-                Person parent = tableModel.getPerson(table.getSelectedRow());
-                window.setParentInAMoment(parent);
-                window.addPerson();
-                close();
-            }
+        table.getSelectionModel().addListSelectionListener(event -> {
+            Person parent = tableModel.getPerson(table.getSelectedRow());
+            window.setParentInAMoment(parent);
+            window.addPerson();
+            close();
         });
 
         setVisible(true);

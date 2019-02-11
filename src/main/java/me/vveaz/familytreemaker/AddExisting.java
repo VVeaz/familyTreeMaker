@@ -15,7 +15,7 @@ public class AddExisting extends JFrame {
     private JPanel panel;
     private final boolean addingChild;
 
-    public AddExisting(FamilyTree window, boolean addingChild){
+    AddExisting(FamilyTree window, boolean addingChild){
         super(addingChild ? "Who should I give a child?":"Who should I give a parent?");
         this.window = window;
         this.addingChild = addingChild;

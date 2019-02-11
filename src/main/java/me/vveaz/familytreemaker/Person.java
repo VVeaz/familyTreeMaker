@@ -19,42 +19,50 @@ public class Person implements Serializable {
     private boolean isWomen;
     private Object vertex;
 
-    public List<Person> partners;
-    public Map<Person, Object> connectingVertex;
+    List<Person> partners;
+    Map<Person, Object> connectingVertex;
 
 
     private List<Person> children;
     private boolean drawn;
 
-    public boolean isDrawn() {
+    List<Person> getPartners() {
+        return partners;
+    }
+
+    Map<Person, Object> getConnectingVertex() {
+        return connectingVertex;
+    }
+
+    boolean isDrawn() {
         return drawn;
     }
 
-    public void setDrawn(boolean drawn) {
+    void setDrawn(boolean drawn) {
         this.drawn = drawn;
     }
 
-    public boolean hasBothParents(){
+    boolean hasBothParents(){
         return hasMother()&& hasFather();
     }
 
-    public boolean hasMother(){
+    boolean hasMother(){
         return mother != null;
     }
 
-    public boolean hasFather(){
+    boolean hasFather(){
         return father!=null;
     }
 
-    public List<Person> getChildren() {
+    List<Person> getChildren() {
         return children;
     }
 
-    public Person getMother() {
+    Person getMother() {
         return mother;
     }
 
-    public Person getFather() {
+    Person getFather() {
         return father;
     }
 
@@ -62,7 +70,7 @@ public class Person implements Serializable {
         return isWomen;
     }
 
-    public void setWomen(boolean women) {
+    void setWomen(boolean women) {
         isWomen = women;
     }
 
@@ -70,35 +78,35 @@ public class Person implements Serializable {
 //        return id;
 //    }
 
-    public Object getVertex() {
+    Object getVertex() {
         return vertex;
     }
 
-    public void setVertex(Object vertex) {
+    void setVertex(Object vertex) {
         this.vertex = vertex;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public String getSecond_name() {
+    String getSecond_name() {
         return second_name;
     }
 
-    public String getSurname() {
+    String getSurname() {
         return surname;
     }
 
-    public String getDateOfBirth() {
+    String getDateOfBirth() {
         return date_of_birth;
     }
 
-    public String getDateOfDeath() {
+    String getDateOfDeath() {
         return date_of_death;
     }
 
-    public void addChildren(Person person){
+    void addChildren(Person person){
         children.add(person);
         person.addParent(this);
 
@@ -126,8 +134,7 @@ public class Person implements Serializable {
 
     Person(String name, String second_name, String surname, String date_of_birth, String date_of_death) {
         children = new ArrayList<>();
-        isWomen = true; //later i will keep this
-       // this.id = index;
+        isWomen = true;
         this.name = name;
         this.second_name = second_name;
         this.surname = surname;
@@ -152,7 +159,7 @@ public class Person implements Serializable {
         return name+" "+second_name+" "+ surname+" \n"+date_of_birth+" "+ date_of_death;
     }
 
-    public Person(Person person){
+    private Person(Person person){
         this.name = person.name;
         this.second_name = person.second_name;
         this.surname = person.surname;

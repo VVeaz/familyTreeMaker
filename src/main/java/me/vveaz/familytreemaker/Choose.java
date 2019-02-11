@@ -9,7 +9,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Choose extends JFrame {
+class Choose extends JFrame {
     private final FamilyTree window;
     private PersonTableModel tableModel;
     private JTable table;

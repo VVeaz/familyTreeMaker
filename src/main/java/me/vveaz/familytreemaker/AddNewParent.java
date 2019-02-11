@@ -6,14 +6,14 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class AddNewParent extends JFrame {
+class AddNewParent extends JFrame {
     private final FamilyTree window;
     private PersonTableModel tableModel;
     private JTable table;
     private JScrollPane scrollPane;
     private JPanel panel;
 
-    public AddNewParent(FamilyTree window){
+    AddNewParent(FamilyTree window){
         super("Who should I give a parent?");
         this.window = window;
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -43,18 +43,15 @@ public class AddNewParent extends JFrame {
         panel = new JPanel();
         panel.add(scrollPane);
         add(panel,BorderLayout.CENTER);
-        table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-            public void valueChanged(ListSelectionEvent event) {
-                Person child = tableModel.getPerson(table.getSelectedRow());
-                if(child.hasBothParents()){
-                    JOptionPane.showMessageDialog(null, "This person has both parents.");
-                }else {
-                    window.setChildInAMoment(child);
-                    window.addPerson();
-                    close();
-                }
+        table.getSelectionModel().addListSelectionListener(event -> {
+            Person child = tableModel.getPerson(table.getSelectedRow());
+            if(child.hasBothParents()){
+                JOptionPane.showMessageDialog(null, "This person has both parents.");
+            }else {
+                window.setChildInAMoment(child);
+                window.addPerson();
+                close();
             }
-
         });
         setVisible(true);
         this.validate();

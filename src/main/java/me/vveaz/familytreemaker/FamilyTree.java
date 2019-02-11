@@ -306,8 +306,6 @@ public class FamilyTree extends JFrame
             if(child.hasBothParents() &&
                     ((parent.isWomen() && child.getFather().isDrawn() )
                             || (!parent.isWomen() && child.getMother().isDrawn()))) {
-                System.out.println(child.toString());
-                System.out.println(parent.toString());
 
                 Object edge;
                 if (parent.isWomen()) {
@@ -320,7 +318,7 @@ public class FamilyTree extends JFrame
                 graph.getModel().remove(edge);
 
                 Object connectParent;
-                if(!child.getMother().partners.contains(child.getFather())) {
+                if(!child.getMother().getPartners().contains(child.getFather())) {
 
                     double x = (graph.getCellGeometry(child.getMother().getVertex()).getX()
                             + graph.getCellGeometry(child.getFather().getVertex()).getX()) / 2 + 75;
@@ -330,12 +328,12 @@ public class FamilyTree extends JFrame
                     graph.insertEdge(null, null, null, child.getMother().getVertex(), connectParent);
                     graph.insertEdge(null, null, null, child.getFather().getVertex(), connectParent);
 
-                    child.getMother().partners.add(child.getFather());
-                    child.getMother().connectingVertex.put(child.getFather(), connectParent);
-                    child.getFather().partners.add(child.getMother());
-                    child.getFather().connectingVertex.put(child.getMother(), connectParent);
+                    child.getMother().getPartners().add(child.getFather());
+                    child.getMother().getConnectingVertex().put(child.getFather(), connectParent);
+                    child.getFather().getPartners().add(child.getMother());
+                    child.getFather().getConnectingVertex().put(child.getMother(), connectParent);
                 }else{
-                    connectParent = child.getMother().connectingVertex.get(child.getFather());
+                    connectParent = child.getMother().getConnectingVertex().get(child.getFather());
                 }
 
                 graph.insertEdge(null, null, null, connectParent, child.getVertex());
@@ -421,7 +419,11 @@ public class FamilyTree extends JFrame
             }
 
             if(addingNewChild){
-                double x = graph.getCellGeometry(ParentInAMoment.getVertex()).getX();
+                double d = -100;
+                if(ParentInAMoment.isWomen()){
+                    d=100;
+                }
+                double x = graph.getCellGeometry(ParentInAMoment.getVertex()).getX()+d;
                 double y = graph.getCellGeometry(ParentInAMoment.getVertex()).getY() +70;
 
                 v = graph.insertVertex(null, null, addingPerson.toString(),x, y,
