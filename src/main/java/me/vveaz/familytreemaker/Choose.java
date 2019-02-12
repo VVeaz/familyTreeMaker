@@ -1,7 +1,5 @@
 package me.vveaz.familytreemaker;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
@@ -27,7 +25,8 @@ class Choose extends JFrame {
         setSize(600,700);
         addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
-                int i=JOptionPane.showConfirmDialog(null, "Are you sure you want to close this window?");
+                int i=JOptionPane.showConfirmDialog(null, "Are you sure you want to close this window?",
+                        "Closing "+(addingChild ? "choose child":"choose parent"), JOptionPane.YES_NO_CANCEL_OPTION);
                 if(i==0){
 
                     close();
@@ -54,46 +53,43 @@ class Choose extends JFrame {
         panel = new JPanel();
         panel.add(scrollPane);
         add(panel, BorderLayout.CENTER);
-        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent event) {
+        table.getSelectionModel().addListSelectionListener(event -> {
 
-                Person second = tableModel.getPerson(table.getSelectedRow());
-                if (!addingChild && first.hasFather() && !second.isWomen()) {
-                    JOptionPane.showMessageDialog(null, first.toString() + " has father.");
-                    return;
-                }
-                if (!addingChild && first.hasMother() && second.isWomen()) {
-                    JOptionPane.showMessageDialog(null, first.toString() + " has mother.");
-                    return;
-                }
-                if (addingChild && second.hasBothParents()) {
-                    JOptionPane.showMessageDialog(null, second.toString() + " has both parents.");
-                    return;
-                }
-                if (addingChild && second.hasFather() && !first.isWomen()){
-                    JOptionPane.showMessageDialog(null, second.toString() + " has father");
-                    return;
-                }
-                if (addingChild && second.hasMother() && first.isWomen()){
-                    JOptionPane.showMessageDialog(null, second.toString() + " has mother");
-                    return;
-                }
-                int i = JOptionPane.showConfirmDialog(null, "Are you sure you choose " + second.toString() + "?");
-                if (i == 0) {
-                    if (addingChild) {
-                        //first - parent
-                        first.addChildren(second);
-                        window.drawEdge(first, second);
-                    } else {
-                        //second - parent
-                        second.addChildren(first);
-                        window.drawEdge(second, first);
-                    }
-                    close();
-                }
+            Person second = tableModel.getPerson(table.getSelectedRow());
+            if (!addingChild && first.hasFather() && !second.isWomen()) {
+                JOptionPane.showMessageDialog(null, first.toString() + " has father.");
+                return;
             }
-
-
+            if (!addingChild && first.hasMother() && second.isWomen()) {
+                JOptionPane.showMessageDialog(null, first.toString() + " has mother.");
+                return;
+            }
+            if (addingChild && second.hasBothParents()) {
+                JOptionPane.showMessageDialog(null, second.toString() + " has both parents.");
+                return;
+            }
+            if (addingChild && second.hasFather() && !first.isWomen()){
+                JOptionPane.showMessageDialog(null, second.toString() + " has father");
+                return;
+            }
+            if (addingChild && second.hasMother() && first.isWomen()){
+                JOptionPane.showMessageDialog(null, second.toString() + " has mother");
+                return;
+            }
+            int i = JOptionPane.showConfirmDialog(null, "Are you sure you choose " + second.toString() + "?",
+                    "Choosing "+(addingChild ? "child":"parent"), JOptionPane.YES_NO_CANCEL_OPTION);
+            if (i == 0) {
+                if (addingChild) {
+                    //first - parent
+                    first.addChildren(second);
+                    window.drawEdge(first, second);
+                } else {
+                    //second - parent
+                    second.addChildren(first);
+                    window.drawEdge(second, first);
+                }
+                close();
+            }
         });
 
         setVisible(true);

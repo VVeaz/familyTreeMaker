@@ -151,7 +151,8 @@ public class FamilyTree extends JFrame
 
         addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
-                int i=JOptionPane.showConfirmDialog(null, "Are you sure you want to close this window?");
+                int i=JOptionPane.showConfirmDialog(null, "Are you sure you want to close this window?",
+                        "Closing "+getTitle().substring(17), JOptionPane.YES_NO_CANCEL_OPTION);
                 if(i==0){
 
                     close();

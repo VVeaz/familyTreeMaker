@@ -1,13 +1,11 @@
 package me.vveaz.familytreemaker;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class AddExisting extends JFrame {
+class AddExisting extends JFrame {
     private final FamilyTree window;
     private PersonTableModel tableModel;
     private JTable table;
@@ -23,7 +21,8 @@ public class AddExisting extends JFrame {
         setSize(600,700);
         addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
-                int i=JOptionPane.showConfirmDialog(null, "Are you sure you want to close this window?");
+                int i=JOptionPane.showConfirmDialog(null, "Are you sure you want to close this window?",
+                        "Closing "+(addingChild ? "who should I give a child?":"who should I give a parent?"), JOptionPane.YES_NO_CANCEL_OPTION);
                 if(i==0){
 
                     close();
@@ -45,26 +44,23 @@ public class AddExisting extends JFrame {
         panel = new JPanel();
         panel.add(scrollPane);
         add(panel, BorderLayout.CENTER);
-        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent event) {
-                Person first = tableModel.getPerson(table.getSelectedRow());
+        table.getSelectionModel().addListSelectionListener(event -> {
+            Person first = tableModel.getPerson(table.getSelectedRow());
 
-                if(!addingChild && first.hasBothParents()){
-                    JOptionPane.showMessageDialog(null, "This person has both parents.");
-                }else {
+            if(!addingChild && first.hasBothParents()){
+                JOptionPane.showMessageDialog(null, "This person has both parents.");
+            }else {
 
-                    int i = JOptionPane.showConfirmDialog(null, "Are you sure you choose " + first.toString() + "?");
-                    if (i == 0) {
-                        new Choose(window, addingChild, first);
-                        close();
+                int i = JOptionPane.showConfirmDialog(null, "Are you sure you choose " + first.toString() + "?", "Choosing "+(addingChild ? "who I should give a child":"who I should give a parent?"),JOptionPane.YES_NO_CANCEL_OPTION);
+                if (i == 0) {
+                    new Choose(window, addingChild, first);
+                    close();
 
-                    }
                 }
-
-                // window.setParentInAMoment(parent);
-                //window.addPerson();
             }
 
+            // window.setParentInAMoment(parent);
+            //window.addPerson();
         });
         setVisible(true);
         this.validate();

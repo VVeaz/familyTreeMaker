@@ -1,7 +1,5 @@
 package me.vveaz.familytreemaker;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -21,7 +19,8 @@ class AddNewChild extends JFrame {
 
         addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
-                int i=JOptionPane.showConfirmDialog(null, "Are you sure you want to close this window?");
+                int i=JOptionPane.showConfirmDialog(null, "Are you sure you want to close this window?",
+                        "Closing who should I give a child", JOptionPane.YES_NO_CANCEL_OPTION);
                 if(i==0){
                     window.setAddingNewChild(false);
                     close();
@@ -45,9 +44,12 @@ class AddNewChild extends JFrame {
         add(panel,BorderLayout.CENTER);
         table.getSelectionModel().addListSelectionListener(event -> {
             Person parent = tableModel.getPerson(table.getSelectedRow());
-            window.setParentInAMoment(parent);
-            window.addPerson();
-            close();
+            int i = JOptionPane.showConfirmDialog(null, "Are you sure you choose " + parent.toString() + "?", "Choosing parent",JOptionPane.YES_NO_CANCEL_OPTION);
+            if(i==0) {
+                window.setParentInAMoment(parent);
+                window.addPerson();
+                close();
+            }
         });
 
         setVisible(true);

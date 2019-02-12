@@ -21,7 +21,8 @@ class AddNewParent extends JFrame {
 
         addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
-                int i=JOptionPane.showConfirmDialog(null, "Are you sure you want to close this window?");
+                int i=JOptionPane.showConfirmDialog(null, "Are you sure you want to close this window?",
+                        "Closing who should I give a parent", JOptionPane.YES_NO_CANCEL_OPTION);
                 if(i==0){
                     window.setAddingNewChild(false);
                     window.setAddingNewParent(false);
@@ -48,9 +49,14 @@ class AddNewParent extends JFrame {
             if(child.hasBothParents()){
                 JOptionPane.showMessageDialog(null, "This person has both parents.");
             }else {
-                window.setChildInAMoment(child);
-                window.addPerson();
-                close();
+                int i = JOptionPane.showConfirmDialog(null, "Are you sure you choose "
+                        + child.toString() + "?", "Choosing parent",JOptionPane.YES_NO_CANCEL_OPTION);
+                if(i==0) {
+                    window.setChildInAMoment(child);
+                    window.addPerson();
+                    close();
+                }
+
             }
         });
         setVisible(true);

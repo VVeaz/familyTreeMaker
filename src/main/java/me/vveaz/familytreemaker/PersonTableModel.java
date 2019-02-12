@@ -5,11 +5,11 @@ import java.util.List;
 public class PersonTableModel extends AbstractTableModel {
     private String[] columnNames = {"Name", "Second name", "Surname", "Date of birth", "Date of death"};
     private List<Person> myList;
-    public PersonTableModel(List<Person> List){
+    PersonTableModel(List<Person> List){
 
         this.myList = List;
     }
-    public Person getPerson(int rowIndex){
+    Person getPerson(int rowIndex){
         if( rowIndex<0 || rowIndex>getRowCount() ){
             return null;
         }

@@ -84,14 +84,11 @@ public class AddPerson extends JFrame implements ActionListener {
         panel2.add(option1Woman);
         panel2.add(option2Man);
 
-
-
         jButton1Add =new JButton("Add person");
         jButton1Add.addActionListener(this);
 
         panel1.add(panel2);
         panel1.add(jButton1Add);
-
 
         setLayout(new GridBagLayout());
         add(panel1);
@@ -99,7 +96,8 @@ public class AddPerson extends JFrame implements ActionListener {
 
         addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
-                int i=JOptionPane.showConfirmDialog(null, "Are you sure you want to close this window?");
+                int i=JOptionPane.showConfirmDialog(null, "Are you sure you want to close this window?",
+                        "Closing add person", JOptionPane.YES_NO_CANCEL_OPTION);
                 if(i==0){
                     window.setAddingNewChild(false);
                     window.setAddingNewParent(false);
