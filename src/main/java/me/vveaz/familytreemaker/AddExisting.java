@@ -51,7 +51,9 @@ class AddExisting extends JFrame {
                 JOptionPane.showMessageDialog(null, "This person has both parents.");
             }else {
 
-                int i = JOptionPane.showConfirmDialog(null, "Are you sure you choose " + first.toString() + "?", "Choosing "+(addingChild ? "who I should give a child":"who I should give a parent?"),JOptionPane.YES_NO_CANCEL_OPTION);
+                int i = JOptionPane.showConfirmDialog(null, "Are you sure you choose "
+                        + first.toString() + "?", "Choosing "+(addingChild ? "who I should give a child"
+                        :"who I should give a parent"),JOptionPane.YES_NO_CANCEL_OPTION);
                 if (i == 0) {
                     new Choose(window, addingChild, first);
                     close();

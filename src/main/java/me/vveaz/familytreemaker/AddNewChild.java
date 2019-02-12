@@ -44,7 +44,8 @@ class AddNewChild extends JFrame {
         add(panel,BorderLayout.CENTER);
         table.getSelectionModel().addListSelectionListener(event -> {
             Person parent = tableModel.getPerson(table.getSelectedRow());
-            int i = JOptionPane.showConfirmDialog(null, "Are you sure you choose " + parent.toString() + "?", "Choosing parent",JOptionPane.YES_NO_CANCEL_OPTION);
+            int i = JOptionPane.showConfirmDialog(null, "Are you sure you choose "
+                    + parent.toString() + "?", "Choosing parent",JOptionPane.YES_NO_CANCEL_OPTION);
             if(i==0) {
                 window.setParentInAMoment(parent);
                 window.addPerson();

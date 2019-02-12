@@ -6,7 +6,7 @@ import com.mxgraph.view.mxGraph;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -89,32 +89,31 @@ public class FamilyTree extends JFrame
         setBounds(10,10,600,400);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-
-        ActionListener myChoserActionListener = new MyChoserActionListener();
+        ActionListener myChooserActionListener = new MyChooserActionListener();
         JMenuBar menuBar = new JMenuBar();
         JMenu file = new JMenu("File");
         menuBar.add(file);
 
         JMenuItem add_new_family_tree = new JMenuItem("Add new family tree");
-        add_new_family_tree.addActionListener(myChoserActionListener);
+        add_new_family_tree.addActionListener(myChooserActionListener);
         file.add(add_new_family_tree);
 
         openFamilyTree = new JMenuItem("Open family tree");
-        openFamilyTree.addActionListener(myChoserActionListener);
+        openFamilyTree.addActionListener(myChooserActionListener);
         file.add(openFamilyTree);
 
         addPerson = new JMenuItem("Add person");
-        addPerson.addActionListener(myChoserActionListener);
+        addPerson.addActionListener(myChooserActionListener);
         file.add(addPerson);
         addPerson.setEnabled(false);
 
         addChild = new JMenu("Add child");
 
         addNewChild = new JMenuItem("Add new child");
-        addNewChild.addActionListener(myChoserActionListener);
+        addNewChild.addActionListener(myChooserActionListener);
         addChild.add(addNewChild);
         addExistingChild = new JMenuItem("Add existing child");
-        addExistingChild.addActionListener(myChoserActionListener);
+        addExistingChild.addActionListener(myChooserActionListener);
         addChild.add(addExistingChild);
         addExistingChild.setEnabled(false);
         file.add(addChild);
@@ -123,10 +122,10 @@ public class FamilyTree extends JFrame
 
         addParent = new JMenu("Add parent");
         addNewParent = new JMenuItem("Add new parent");
-        addNewParent.addActionListener(myChoserActionListener);
+        addNewParent.addActionListener(myChooserActionListener);
         addParent.add(addNewParent);
         addExistingParent = new JMenuItem("Add existing parent");
-        addExistingParent.addActionListener(myChoserActionListener);
+        addExistingParent.addActionListener(myChooserActionListener);
         addParent.add(addExistingParent);
         addExistingParent.setEnabled(false);
         file.add(addParent);
@@ -136,15 +135,15 @@ public class FamilyTree extends JFrame
         saveFamilyTreePNG = new JMenuItem("Save as PNG");
         saveFamilyTreeTREE = new JMenuItem("Save as TREE");
 
-        saveFamilyTreePNG.addActionListener(myChoserActionListener);
-        saveFamilyTreeTREE.addActionListener(myChoserActionListener);
+        saveFamilyTreePNG.addActionListener(myChooserActionListener);
+        saveFamilyTreeTREE.addActionListener(myChooserActionListener);
         saveFamilyTree.add(saveFamilyTreePNG);
         saveFamilyTree.add(saveFamilyTreeTREE);
         file.add(saveFamilyTree);
         saveFamilyTree.setEnabled(false);
 
         JMenuItem quit = new JMenuItem("Quit");
-        quit.addActionListener(myChoserActionListener);
+        quit.addActionListener(myChooserActionListener);
         file.add(quit);
 
         setJMenuBar(menuBar);
@@ -174,7 +173,7 @@ public class FamilyTree extends JFrame
     }
 
 
-    private class MyChoserActionListener implements ActionListener {
+    private class MyChooserActionListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
