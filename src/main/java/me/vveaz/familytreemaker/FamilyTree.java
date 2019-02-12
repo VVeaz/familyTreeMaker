@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 
 public class FamilyTree extends JFrame
@@ -51,13 +52,13 @@ public class FamilyTree extends JFrame
         this.childInAMoment = childInAMoment;
     }
 
-    public Person getParentInAMoment() {
-        return ParentInAMoment;
-    }
+//    public Person getParentInAMoment() {
+//        return ParentInAMoment;
+//    }
 
-    public boolean isAddingNewChild() {
-        return addingNewChild;
-    }
+//    public boolean isAddingNewChild() {
+//        return addingNewChild;
+//    }
 
     void setAddingNewChild(boolean addingNewChild) {
         this.addingNewChild = addingNewChild;
@@ -73,7 +74,7 @@ public class FamilyTree extends JFrame
 
     private FamilyTree()
     {
-        super("Family tree maker - untitled.TREE");
+        super("Family tree maker - \\untitled.TREE");
 
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
@@ -151,7 +152,7 @@ public class FamilyTree extends JFrame
         addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
                 int i=JOptionPane.showConfirmDialog(null, "Are you sure you want to close this window?",
-                        "Closing "+getTitle().substring(17), JOptionPane.YES_NO_CANCEL_OPTION);
+                        "Closing "+getTitle().split(Pattern.quote("\\"))[getTitle().split(Pattern.quote("\\")).length-1], JOptionPane.YES_NO_CANCEL_OPTION);
                 if(i==0){
 
                     close();
@@ -160,7 +161,6 @@ public class FamilyTree extends JFrame
             }
 
         });
-
         setVisible(true);
         setLocationRelativeTo(null);
 
@@ -347,6 +347,8 @@ public class FamilyTree extends JFrame
             graph.getModel().endUpdate();
         }
         graphComponent = new mxGraphComponent(graph);
+        graphComponent.getViewport().setOpaque(true);
+        graphComponent.getViewport().setBackground(Color.WHITE);
         getContentPane().add(graphComponent);
     }
 
@@ -389,6 +391,8 @@ public class FamilyTree extends JFrame
                 graph.getModel().endUpdate();
             }
             graphComponent = new mxGraphComponent(graph);
+            graphComponent.getViewport().setOpaque(true);
+            graphComponent.getViewport().setBackground(Color.WHITE);
             getContentPane().add(graphComponent);
         }
         addPerson.setEnabled(true);
@@ -466,6 +470,8 @@ public class FamilyTree extends JFrame
         }
 
         graphComponent = new mxGraphComponent(graph);
+        graphComponent.getViewport().setOpaque(true);
+        graphComponent.getViewport().setBackground(Color.WHITE);
         getContentPane().add(graphComponent);
 
         addPerson.setEnabled(true);
@@ -486,12 +492,6 @@ public class FamilyTree extends JFrame
 
 
     public static void main(String[] args) {
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        });
         FamilyTree frame = new FamilyTree();
         frame.setVisible(true);
     }
